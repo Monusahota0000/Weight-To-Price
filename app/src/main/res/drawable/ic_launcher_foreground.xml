@@ -1,0 +1,70 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Text-based "Weight To Price" Icon - Minimalist Design -->
+    
+    <!-- Light Gray Text Color -->
+    
+    <!-- "WEIGHT" - Top Line -->
+    <!-- W -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M18,30 L20,30 L20,38 L22,38 L22,30 L24,30 L24,42 L22,42 L22,40 L20,40 L20,42 L18,42 Z" />
+    <!-- E -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M26,30 L32,30 L32,32 L28,32 L28,34 L31,34 L31,36 L28,36 L28,40 L32,40 L32,42 L26,42 Z" />
+    <!-- I -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M34,30 L36,30 L36,42 L34,42 Z" />
+    <!-- G -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M38,30 L44,30 L44,32 L40,32 L40,36 L43,36 L43,40 L40,40 L40,42 L44,42 L44,40 L42,40 L42,38 L40,38 L40,34 L44,34 L44,32 L40,32 Z" />
+    <!-- H -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M46,30 L48,30 L48,36 L52,36 L52,30 L54,30 L54,42 L52,42 L52,38 L48,38 L48,42 L46,42 Z" />
+    <!-- T -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M56,30 L62,30 L62,32 L59,32 L59,42 L57,42 L57,32 L56,32 Z" />
+    
+    <!-- "TO" - Middle Line -->
+    <!-- T -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M32,48 L38,48 L38,50 L36,50 L36,58 L34,58 L34,50 L32,50 Z" />
+    <!-- O -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M40,48 L46,48 L46,50 L42,50 L42,56 L46,56 L46,58 L40,58 L40,56 L44,56 L44,50 L40,50 Z" />
+    
+    <!-- "PRICE" - Bottom Line -->
+    <!-- P -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M20,62 L26,62 L26,64 L22,64 L22,68 L26,68 L26,70 L22,70 L22,72 L20,72 Z" />
+    <!-- R -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M28,62 L34,62 L34,64 L30,64 L30,68 L34,68 L34,70 L30,70 L30,72 L28,72 Z" />
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M32,68 L34,68 L34,70 L32,70 Z" />
+    <!-- I -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M36,62 L38,62 L38,72 L36,72 Z" />
+    <!-- C -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M40,62 L46,62 L46,64 L42,64 L42,70 L46,70 L46,72 L40,72 Z" />
+    <!-- E -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M48,62 L54,62 L54,64 L50,64 L50,66 L53,66 L53,68 L50,68 L50,70 L54,70 L54,72 L48,72 Z" />
+</vector>

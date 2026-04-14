@@ -1,6 +1,8 @@
 package com.monusahota.weighttoprice
 
 import android.os.Bundle
+import android.util.Log
+import android.content.pm.ApplicationInfo
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +13,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -18,15 +23,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.monusahota.weighttoprice.ui.theme.WeightToPriceTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MobileAds.initialize(this)
         enableEdgeToEdge()
         setContent {
             WeightToPriceTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        BannerAd(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .navigationBarsPadding()
+                        )
+                    }
+                ) { innerPadding ->
                     WeightToPriceScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -34,6 +56,50 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+fun BannerAd(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+    val adWidthDp = with(density) { configuration.screenWidthDp.dp.roundToPx().toDp().value.toInt() }
+    val isDebuggable = (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+    val adUnitId = if (isDebuggable) {
+        // Google test banner for debug builds (always safe and usually serves)
+        "ca-app-pub-3940256099942544/6300978111"
+    } else {
+        "ca-app-pub-9321276679154460/4420163752"
+    }
+
+    val adView = remember(adWidthDp, adUnitId) {
+        AdView(context).apply {
+            val adaptiveSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidthDp)
+            setAdSize(adaptiveSize)
+            setAdUnitId(adUnitId)
+            adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    Log.d("AdMob", "Banner loaded")
+                }
+
+                fun onAdFailedToLoad(adError: AdError) {
+                    Log.e("AdMob", "Banner failed: ${adError.code} ${adError.message}")
+                }
+            }
+            loadAd(AdRequest.Builder().build())
+        }
+    }
+
+    DisposableEffect(adView) {
+        onDispose {
+            adView.destroy()
+        }
+    }
+
+    AndroidView(
+        modifier = modifier,
+        factory = { adView }
+    )
 }
 
 @Composable

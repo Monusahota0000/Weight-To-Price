@@ -3,9 +3,16 @@ package com.monusahota.weighttoprice
 import android.os.Bundle
 import android.util.Log
 import android.content.pm.ApplicationInfo
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,6 +20,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -41,6 +49,13 @@ class MainActivity : ComponentActivity() {
             WeightToPriceTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        ReviewTip(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .statusBarsPadding()
+                        )
+                    },
                     bottomBar = {
                         BannerAd(
                             modifier = Modifier
@@ -55,6 +70,72 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ReviewTip(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val pulseTransition = rememberInfiniteTransition(label = "review_tip_pulse")
+    val pulseScale by pulseTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 850),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "review_tip_scale"
+    )
+    val pulseAlpha by pulseTransition.animateFloat(
+        initialValue = 0.75f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 850),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "review_tip_alpha"
+    )
+
+    Row(
+        modifier = modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        TextButton(
+            onClick = { openPlayStoreReview(context) },
+            modifier = Modifier.graphicsLayer(
+                scaleX = pulseScale,
+                scaleY = pulseScale,
+                alpha = pulseAlpha
+            )
+        ) {
+            Text(
+                text = "Do you want any other feature in this app please let me know",
+                fontSize = 12.sp,
+                textAlign = TextAlign.End
+            )
+        }
+    }
+}
+
+private fun openPlayStoreReview(context: android.content.Context) {
+    val packageName = context.packageName
+    val marketIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("market://details?id=$packageName")
+    ).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    val webIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+    ).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+
+    try {
+        context.startActivity(marketIntent)
+    } catch (_: Exception) {
+        context.startActivity(webIntent)
     }
 }
 
